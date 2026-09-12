@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Roberto Marcos Almazán Muñoz - roberto.almazan.m@gmail.com">
+<!--Link para poner un ícono a la pestaña del navegador-->
+ <link rel="icon" type="image/svg" th:href="@{/img/colegio.svg}" />
+
+<!-- Bootstrap -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<title>Iniciar sesión | Academia</title>
+</head>
+<body>
+	<!-- Contenedor principal -->
+	<div class="container">
+		<div class="row justify-content-center mt-5">
+			<div class="col-md-5 col-lg-4">
+				<div class="card shadow">
+					<!-- Encabezado -->
+					<div class="card-header bg-dark text-white text-center">
+						<h4 class="mb-0">Iniciar sesión</h4>
+					</div>
+					<!-- Contenido -->
+					<div class="card-body">
+						<!-- Mensaje de error -->
+						<div th:if="${param.error}" class="alert alert-danger"
+							role="alert">Usuario o contraseña incorrectos.</div>
+						<!-- Mensaje de logout -->
+						<div th:if="${param.logout}" class="alert alert-success"
+							role="alert">Has cerrado sesión correctamente.</div>
+						<div th:if="${param.registro}" class="alert alert-success"
+							role="alert">Registro realizado correctamente. Ya puedes
+							iniciar sesión.</div>
+							
+						<!-- Formulario -->
+						<form th:action="@{/login}" method="post">
+							<!-- Usuario -->
+							<div class="mb-3">
+								<label for="username" class="form-label"> Email </label> <input
+									type="text" class="form-control" id="username" name="username"
+									placeholder="Ingrese su email" required autofocus>
+							</div>
+							<!-- Contraseña -->
+							<div class="mb-3">
+								<label for="password" class="form-label"> Contraseña </label> <input
+									type="password" class="form-control" id="password"
+									name="password" placeholder="Ingrese su contraseña" required>
+							</div>
+							<!-- Botón -->
+							<div class="d-grid">
+								<button type="submit" class="btn btn-primary">Ingresar
+								</button>
+							</div>
+						</form>
+						<!-- Registro -->
+						<div class="text-center mt-4">
+							<p class="mb-2">¿No tienes una cuenta?</p>
+							<a th:href="@{/registro}" class="btn btn-outline-secondary">
+								Registrarse </a>
+						</div>
+						<!-- Volver -->
+						<div class="text-center mt-3">
+							<a th:href="@{/}"> ← Volver al inicio </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+		
+	</script>
+	
+</body>
+</html>

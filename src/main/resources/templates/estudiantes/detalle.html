@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Roberto Marcos Almazán Muñoz - roberto.almazan.m@gmail.com">
+<!--Link para poner un ícono a la pestaña del navegador-->
+ <link rel="icon" type="image/svg" th:href="@{/img/colegio.svg}" />
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link th:href="@{/css/estilos.css}" rel="stylesheet">
+
+<title>Detalle del Estudiante</title>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+	<main class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Detalle del Estudiante</h1>
+			<a th:href="@{/estudiantes}" class="btn btn-secondary"> Volver </a>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<!-- INFORMACIÓN -->
+					<div class="col-md-8">
+						<h2 th:text="${estudiante.nombre}">Elba Silón Mata Sarmiento</h2>
+						<hr>
+						<p>
+							<strong>ID:</strong> <span th:text="${estudiante.id}"> 1 </span>
+						</p>
+						<p>
+							<strong>RUT:</strong> <span th:text="${estudiante.rut}"> 1234567-9
+							</span>
+						</p>
+						<p>
+							<strong>Fecha de nacimiento:</strong> <span th:text="${estudiante.fecha_nac}"> 21/12/1990
+							</span>
+						</p>
+						<p>
+							<strong>Edad:</strong> <span th:text="${estudiante.edad}"> 35
+							</span>
+						</p>
+						<p>
+							<strong>Género:</strong> <span th:text="${estudiante.genero}"> Femenino
+							</span>
+						</p>
+						<p>
+							<strong>Teléfono:</strong> <span th:text="${estudiante.telefono}"> +56912343478
+							</span>
+						</p>
+						<p>
+							<strong>Curso:</strong> <span th:text="${estudiante.curso.nombre}"> Cálculo I
+							</span>
+						</p>
+						<p>
+							<strong>Carrera:</strong> <span th:text="${estudiante.carrera}"> Medicina
+							</span>
+						</p>
+						<p>
+							<strong>Año:</strong> <span th:text="${estudiante.año}"> 1 </span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+		
+	</script>
+
+</body>
+
+</html>

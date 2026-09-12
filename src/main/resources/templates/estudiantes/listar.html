@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Roberto Marcos Almazán Muñoz - roberto.almazan.m@gmail.com">
+<!--Link para poner un ícono a la pestaña del navegador-->
+ <link rel="icon" type="image/svg" th:href="@{/img/colegio.svg}" />
+
+<!-- Bootstrap -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<!-- CSS propio -->
+<link rel="stylesheet" th:href="@{/css/estilos.css}">
+
+<title>Estudiantes | Academia</title>
+</head>
+<body>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+	<main class="container mt-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="mb-0">
+				<i class="bi bi-book"></i> Estudiantes
+			</h1>
+			<a sec:authorize="hasRole('Administrador')" th:href="@{/estudiantes/nuevo}" class="btn btn-primary"> <i
+				class="bi bi-plus-circle"></i> Nuevo estudiante
+			</a>
+		</div>
+
+		<form th:action="@{/estudiantes}" method="get" class="row g-2 mb-4">
+			<div class="col-md-8">
+				<input type="text" name="buscar" th:value="${buscar}"
+					class="form-control" placeholder="Buscar por nombre, rut, teléfono, género, nombre del curso o carrera...">
+			</div>
+			<div class="col-md-2">
+				<button type="submit" class="btn btn-primary w-100">
+					<i class="bi bi-search"></i> Buscar
+				</button>
+			</div>
+			<div class="col-md-2">
+				<a th:href="@{/estudiantes}" class="btn btn-secondary w-100"> <i
+					class="bi bi-x-circle"></i> Limpiar
+				</a>
+			</div>
+		</form>
+
+		<div th:if="${buscar != null and !buscar.isEmpty()}"
+			class="alert alert-info">
+			<i class="bi bi-search"></i> Resultados para: <strong
+				th:text="${buscar}"> búsqueda </strong>
+		</div>
+
+		<div th:if="${#lists.isEmpty(estudiantes)}" class="alert alert-warning">
+			<i class="bi bi-exclamation-circle"></i> No se encontraron estudiantes.
+		</div>
+
+		<div th:if="${not #lists.isEmpty(estudiantes)}" class="table-responsive">
+			<table class="table table-striped table-hover align-middle">
+				<thead class="table-dark">
+					<tr>
+						<th>ID</th>
+						<th>Rut</th>
+						<th>Nombre</th>
+						<th>Fecha de Nacimiento</th>
+						<th>Edad</th>
+						<th>Género</th>
+						<th>Teléfono</th>
+						<th>Curso</th>
+						<th>Carrera</th>
+						<th>Año en curso</th>
+						<th class="text-center">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="estudiante : ${estudiantes}">
+						<!-- ID -->
+						<td th:text="${estudiante.id}">1</td>
+						<!-- RUT -->
+						<td th:text="${estudiante.rut}">12345678-9</td>
+						<!--NOMBRE -->
+						<td th:text="${estudiante.nombre}">Christian Aquiles Castro Almazán</td>
+						<!--FECHA DE NACIMIENTO -->
+						<td th:text="${estudiante.fecha_nac}">10/08/1990</td>
+						<!--EDAD -->
+						<td th:text="${estudiante.edad}">36</td>
+						<!--GÉNERO -->
+						<td th:text="${estudiante.genero}">Masculino</td>
+						<!--TELÉFONO -->
+						<td th:text="${estudiante.telefono}">+56912345678</td>
+						<!--CURSO -->
+						<td th:text="${estudiante.curso.nombre}">Cálculo II</td>
+						<!--CARRERA -->
+						<td th:text="${estudiante.carrera}">Ingeniería informática</td>
+						<!-- AÑO -->
+						<td th:text="${estudiante.año}">2</td>
+						<td class="text-center">
+						<a th:href="@{/estudiantes/ver/{id}(id=${estudiante.id})}"
+							class="btn btn-primary btn-sm my-1"> <i class="bi bi-eye"></i>
+						</a>
+						<a sec:authorize="hasRole('Administrador')"
+							th:href="@{/estudiantes/editar/{id}(id=${estudiante.id})}"
+							class="btn btn-warning btn-sm my-1"> <i
+								class="bi bi-pencil-square"></i>
+						</a>
+							<button sec:authorize="hasRole('Administrador')" type="button" class="btn btn-danger btn-sm"
+								th:onclick="'confirmarEliminacion(' + ${estudiante.id} + ')'">
+								<i class="bi bi-trash"></i>
+							</button>
+							<form th:id="'formEliminar' + ${estudiante.id}"
+								th:action="@{/estudiantes/eliminar/{id}(id=${estudiante.id})}"
+								method="post" style="display: none;"></form></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+		
+	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
+
+	<script th:if="${mensaje != null}" th:inline="javascript">
+        Swal.fire({
+            icon: 'success',
+            title: 'Operación realizada',
+            text: /*[[${mensaje}]]*/ '',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    
+    <script th:if="${error != null}" th:inline="javascript">
+        Swal.fire({
+            icon: 'warning',
+            title: 'Problemas operacionales',
+            text: /*[[${error}]]*/ '',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+
+	<script>
+        function confirmarEliminacion(id) {
+            Swal.fire({
+                title: '¿Eliminar estudiante?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
+            }).then((resultado) => {
+                if (resultado.isConfirmed) {
+                    document.getElementById('formEliminar' + id).submit();
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

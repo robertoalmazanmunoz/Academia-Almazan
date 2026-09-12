@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+		th:fragment="navbar">
+		<div class="container">
+			<!-- Nombre de la aplicación -->
+			<a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+				<img th:src="@{/img/colegio.svg}" alt="Logo Academia"
+				class="me-2 logo-img"> <strong>Academia</strong>
+			</a>
+
+			<!-- Botón responsive -->
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarAcademia"
+				aria-controls="navbarAcademia" aria-expanded="false"
+				aria-label="Mostrar navegación">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Menú -->
+			<div class="collapse navbar-collapse" id="navbarAcademia">
+				<!-- Menú principal -->
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<!-- Inicio -->
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">
+							Home </a></li>
+					<!-- Cursos -->
+					<li class="nav-item" sec:authorize="isAuthenticated()"><a
+						class="nav-link" th:href="@{/cursos}"> Cursos </a></li>
+					<!-- Estudiantes -->
+					<li class="nav-item" sec:authorize="isAuthenticated()"><a
+						class="nav-link" th:href="@{/estudiantes}"> Estudiantes </a></li>
+
+					<!-- Administración -->
+					<li class="nav-item" sec:authorize="hasRole('Administrador')"><a
+						class="nav-link" th:href="@{/admin}"> Administración </a></li>
+				</ul>
+
+				<!-- USUARIO NO AUTENTICADO -->
+				<div sec:authorize="isAnonymous()">
+					<a th:href="@{/login}" class="btn btn-outline-light me-2">
+						Ingresar </a> <a th:href="@{/registro}" class="btn btn-primary">
+						Registrarse </a>
+				</div>
+
+				<!-- USUARIO AUTENTICADO -->
+				<div sec:authorize="isAuthenticated()"
+					class="d-flex align-items-center">
+					<!-- Usuario -->
+					<span class="text-white me-3"> Bienvenido, <strong
+						sec:authentication="name"> </strong>
+					</span>
+					<!-- Rol Administrador -->
+					<span sec:authorize="hasRole('Administrador')" class="badge bg-danger me-3">
+						Administrador </span>
+					<!-- Rol Usuario -->
+					<span sec:authorize="hasRole('Usuario')" class="badge bg-primary me-3">
+						Usuario </span>
+
+					<!-- Logout -->
+					<form th:action="@{/logout}" method="post" class="d-inline">
+						<button type="submit" class="btn btn-outline-light">
+							Cerrar sesión</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+
+</body>
+</html>

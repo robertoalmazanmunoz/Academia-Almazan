@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Roberto Marcos Almazán Muñoz - roberto.almazan.m@gmail.com">
+<!--Link para poner un ícono a la pestaña del navegador-->
+ <link rel="icon" type="image/svg" th:href="@{/img/colegio.svg}" />
+
+<!-- Bootstrap -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+	
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<!-- CSS propio -->
+<link th:href="@{/css/estilos.css}" rel="stylesheet">
+
+<title>Detalle del Curso</title>
+
+</head>
+<body>
+	<!-- NAVBAR -->
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+	
+	<main class="container mt-4">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1>Detalle del Curso</h1>
+			<a th:href="@{/cursos}" class="btn btn-secondary"> Volver </a>
+		</div>
+		<!-- DATOS DEL CURSO -->
+		<div class="card mb-4">
+			<div class="card-header">
+				<h4 class="mb-0">Información del curso</h4>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-2">
+						<strong>ID</strong>
+						<p th:text="${curso.id}">1</p>
+					</div>
+					<div class="col-md-6">
+						<strong>Nombre</strong>
+						<p th:text="${curso.nombre}">Cálculo I</p>
+					</div>
+					<div class="col-md-4">
+						<strong>Semestre</strong>
+						<p th:text="${curso.semestre}">Primer Semestre</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ESTUDIANTES DEL CURSO -->
+		<div class="card">
+			<div class="card-header">
+				<h4 class="mb-0">Estudiantes del curso</h4>
+			</div>
+			<div class="card-body">
+				<div th:if="${curso.estudiantes == null or curso.estudiantes.isEmpty()}"
+					class="alert alert-info">Este curso no tiene estudiantes
+					inscritos.</div>
+				<div th:if="${curso.estudiantes != null and !curso.estudiantes.isEmpty()}">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover">
+							<thead class="table-dark">
+								<tr>
+									<th>ID</th>
+									<th>Nombre</th>
+									<th>Carrera</th>
+									<th>Año en curso</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="estudiante : ${curso.estudiantes}">
+									<td th:text="${estudiante.id}">1</td>
+									<td th:text="${estudiante.nombre}">Christian Esteban Dido Sarmiento</td>
+									<td th:text="${estudiante.carrera}">Ingeniería Informática</td>
+									<td th:text="${estudiante.año}">1</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+	<!-- FOOTER -->
+	<div th:replace="~{fragments/footer :: footer}"></div>
+	
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+		
+	</script>
+</body>
+</html>
